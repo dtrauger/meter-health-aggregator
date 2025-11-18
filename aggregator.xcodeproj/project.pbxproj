@@ -7,6 +7,10 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		E101EBB72EBB901C00691C76 /* HealthDataModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = E101EBB62EBB901C00691C76 /* HealthDataModel.swift */; };
+		E101EBB92EBB903800691C76 /* HealthKitManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = E101EBB82EBB903800691C76 /* HealthKitManager.swift */; };
+		E101EBBB2EBB905500691C76 /* HealthDataView.swift in Sources */ = {isa = PBXBuildFile; fileRef = E101EBBA2EBB905500691C76 /* HealthDataView.swift */; };
+		E101EBBD2EBB907D00691C76 /* HealthKitSetupGuide.swift in Sources */ = {isa = PBXBuildFile; fileRef = E101EBBC2EBB907D00691C76 /* HealthKitSetupGuide.swift */; };
 		E18B71862EB1209100035304 /* aggregatorApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = E18B71852EB1209100035304 /* aggregatorApp.swift */; };
 		E18B71882EB1209100035304 /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = E18B71872EB1209100035304 /* ContentView.swift */; };
 		E18B718A2EB1209100035304 /* Item.swift in Sources */ = {isa = PBXBuildFile; fileRef = E18B71892EB1209100035304 /* Item.swift */; };
@@ -15,6 +19,7 @@
 		E18B71992EB1209200035304 /* aggregatorTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = E18B71982EB1209200035304 /* aggregatorTests.swift */; };
 		E18B71A32EB1209200035304 /* aggregatorUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = E18B71A22EB1209200035304 /* aggregatorUITests.swift */; };
 		E18B71A52EB1209200035304 /* aggregatorUITestsLaunchTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = E18B71A42EB1209200035304 /* aggregatorUITestsLaunchTests.swift */; };
+		E18F84822ECBC989000AAB33 /* HealthDataDetailView.swift in Sources */ = {isa = PBXBuildFile; fileRef = E18F84812ECBC989000AAB33 /* HealthDataDetailView.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -35,6 +40,12 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		E101EBB62EBB901C00691C76 /* HealthDataModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HealthDataModel.swift; sourceTree = "<group>"; };
+		E101EBB82EBB903800691C76 /* HealthKitManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HealthKitManager.swift; sourceTree = "<group>"; };
+		E101EBBA2EBB905500691C76 /* HealthDataView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HealthDataView.swift; sourceTree = "<group>"; };
+		E101EBBC2EBB907D00691C76 /* HealthKitSetupGuide.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HealthKitSetupGuide.swift; sourceTree = "<group>"; };
+		E101EBBE2EBB949B00691C76 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		E101EBC02EBB95B800691C76 /* aggregator.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = aggregator.entitlements; sourceTree = "<group>"; };
 		E18B71822EB1209100035304 /* aggregator.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = aggregator.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		E18B71852EB1209100035304 /* aggregatorApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = aggregatorApp.swift; sourceTree = "<group>"; };
 		E18B71872EB1209100035304 /* ContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentView.swift; sourceTree = "<group>"; };
@@ -46,6 +57,7 @@
 		E18B719E2EB1209200035304 /* aggregatorUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = aggregatorUITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		E18B71A22EB1209200035304 /* aggregatorUITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = aggregatorUITests.swift; sourceTree = "<group>"; };
 		E18B71A42EB1209200035304 /* aggregatorUITestsLaunchTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = aggregatorUITestsLaunchTests.swift; sourceTree = "<group>"; };
+		E18F84812ECBC989000AAB33 /* HealthDataDetailView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HealthDataDetailView.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -96,11 +108,18 @@
 		E18B71842EB1209100035304 /* aggregator */ = {
 			isa = PBXGroup;
 			children = (
+				E101EBC02EBB95B800691C76 /* aggregator.entitlements */,
 				E18B71852EB1209100035304 /* aggregatorApp.swift */,
 				E18B71872EB1209100035304 /* ContentView.swift */,
 				E18B71892EB1209100035304 /* Item.swift */,
 				E18B718B2EB1209200035304 /* Assets.xcassets */,
 				E18B718D2EB1209200035304 /* Preview Content */,
+				E101EBB62EBB901C00691C76 /* HealthDataModel.swift */,
+				E101EBB82EBB903800691C76 /* HealthKitManager.swift */,
+				E101EBBA2EBB905500691C76 /* HealthDataView.swift */,
+				E18F84812ECBC989000AAB33 /* HealthDataDetailView.swift */,
+				E101EBBC2EBB907D00691C76 /* HealthKitSetupGuide.swift */,
+				E101EBBE2EBB949B00691C76 /* Info.plist */,
 			);
 			path = aggregator;
 			sourceTree = "<group>";
@@ -261,8 +280,13 @@
 			buildActionMask = 2147483647;
 			files = (
 				E18B71882EB1209100035304 /* ContentView.swift in Sources */,
+				E101EBB72EBB901C00691C76 /* HealthDataModel.swift in Sources */,
 				E18B718A2EB1209100035304 /* Item.swift in Sources */,
+				E18F84822ECBC989000AAB33 /* HealthDataDetailView.swift in Sources */,
+				E101EBB92EBB903800691C76 /* HealthKitManager.swift in Sources */,
+				E101EBBB2EBB905500691C76 /* HealthDataView.swift in Sources */,
 				E18B71862EB1209100035304 /* aggregatorApp.swift in Sources */,
+				E101EBBD2EBB907D00691C76 /* HealthKitSetupGuide.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -351,6 +375,7 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
+				INFOPLIST_FILE = aggregator/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 17.5;
 				LOCALIZATION_PREFERS_STRING_CATALOGS = YES;
 				MTL_ENABLE_DEBUG_INFO = INCLUDE_SOURCE;
@@ -408,6 +433,7 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
+				INFOPLIST_FILE = aggregator/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 17.5;
 				LOCALIZATION_PREFERS_STRING_CATALOGS = YES;
 				MTL_ENABLE_DEBUG_INFO = NO;
@@ -423,9 +449,11 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				CODE_SIGN_ENTITLEMENTS = aggregator/aggregator.entitlements;
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_ASSET_PATHS = "\"aggregator/Preview Content\"";
+				DEVELOPMENT_TEAM = U6KB76X53E;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
@@ -451,9 +479,11 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				CODE_SIGN_ENTITLEMENTS = aggregator/aggregator.entitlements;
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_ASSET_PATHS = "\"aggregator/Preview Content\"";
+				DEVELOPMENT_TEAM = U6KB76X53E;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;

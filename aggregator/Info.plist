@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<key>NSHealthShareUsageDescription</key>
+	<string>This app needs access to your health data to display personalized health metrics and trends including heart rate, weight, blood oxygen, blood glucose, blood pressure, and respiratory rate.</string>
+	<key>NSHealthUpdateUsageDescription</key>
+	<string>This app may update your health data when syncing with other health apps and services.</string>
+	<key>UIApplicationSceneManifest</key>
+	<dict>
+		<key>UIApplicationSupportsMultipleScenes</key>
+		<true/>
+	</dict>
+</dict>
+</plist>
