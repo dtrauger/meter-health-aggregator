@@ -12,7 +12,7 @@ import SwiftData
 @Observable
 class HealthKitManager {
     private let healthStore = HKHealthStore()
-    var isAuthorized = false
+    var isAuthorized = true  // Start optimistically as true to avoid flashing auth screen
     var authorizationError: Error?
     var authorizationMessage: String?
     
@@ -161,34 +161,32 @@ class HealthKitManager {
         }
         
         // Was User Entered (always include, default to false/0 if unknown)
-        // Metadata (complete) - process all metadata and ensure HKMetadataKeyWasUserEntered is always present
-        var metadataDict: [String: Any] = [:]
+        let wasUserEntered = sample.metadata?[HKMetadataKeyWasUserEntered] as? Bool ?? false
+        sampleDict["wasUserEntered"] = wasUserEntered ? 1 : 0
         
+        // Metadata (complete)
         if let metadata = sample.metadata, !metadata.isEmpty {
+            var metadataDict: [String: Any] = [:]
             for (key, value) in metadata {
-                // Process each metadata entry
                 if let stringValue = value as? String {
                     metadataDict[key] = stringValue
+                } else if let numberValue = value as? NSNumber {
+                    metadataDict[key] = numberValue
                 } else if let dateValue = value as? Date {
                     metadataDict[key] = dateFormatter.string(from: dateValue)
                 } else if let boolValue = value as? Bool {
                     metadataDict[key] = boolValue
-                } else if let numberValue = value as? NSNumber {
-                    metadataDict[key] = numberValue
                 } else if let quantityValue = value as? HKQuantity {
+                    // Handle HKQuantity metadata values
                     metadataDict[key] = quantityValue.description
                 } else {
-                    // Handle TimeZone and other objects by converting to string
                     metadataDict[key] = String(describing: value)
                 }
             }
+            sampleDict["metadata"] = metadataDict
+        } else {
+            sampleDict["metadata"] = [:]
         }
-        
-        // Always include HKMetadataKeyWasUserEntered (default to false if not present)
-        let wasUserEntered = sample.metadata?[HKMetadataKeyWasUserEntered] as? Bool ?? false
-        metadataDict[HKMetadataKeyWasUserEntered] = wasUserEntered
-        
-        sampleDict["metadata"] = metadataDict
         
         // Has Undetermined Duration
         sampleDict["hasUndeterminedDuration"] = sample.hasUndeterminedDuration
