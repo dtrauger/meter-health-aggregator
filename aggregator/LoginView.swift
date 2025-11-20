@@ -8,7 +8,7 @@
 import SwiftUI
 
 struct LoginView: View {
-    @Binding var authManager: AuthManager
+    @Bindable var authManager: AuthManager
     
     @State private var username: String = ""
     @State private var password: String = ""
@@ -125,12 +125,10 @@ struct LoginView: View {
             if !success {
                 showError = true
             }
-            // If success, the authManager.isAuthenticated will become true
-            // and the view will automatically switch to the main app
         }
     }
 }
 
 #Preview {
-    LoginView(authManager: .constant(AuthManager()))
+    LoginView(authManager: AuthManager())
 }

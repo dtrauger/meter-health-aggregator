@@ -9,6 +9,25 @@ import SwiftUI
 import SwiftData
 
 struct ContentView: View {
+    @State private var authManager = AuthManager()
+    
+    var body: some View {
+        Group {
+            if authManager.isAuthenticated {
+                MainTabView(authManager: authManager)
+                    .transition(.opacity)
+            } else {
+                LoginView(authManager: authManager)
+                    .transition(.opacity)
+            }
+        }
+        .animation(.easeInOut(duration: 0.3), value: authManager.isAuthenticated)
+    }
+}
+
+struct MainTabView: View {
+    @Bindable var authManager: AuthManager
+    
     var body: some View {
         TabView {
             DashboardView()
@@ -20,6 +39,11 @@ struct ContentView: View {
                 .tabItem {
                     Label("Health", systemImage: "heart.fill")
                 }
+            
+            SettingsView(authManager: authManager)
+                .tabItem {
+                    Label("Settings", systemImage: "gear")
+                }
         }
     }
 }
@@ -28,3 +52,4 @@ struct ContentView: View {
     ContentView()
         .modelContainer(for: HealthDataEntry.self, inMemory: true)
 }
+

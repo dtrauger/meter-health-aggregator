@@ -12,6 +12,9 @@
 		E101EBBB2EBB905500691C76 /* HealthDataView.swift in Sources */ = {isa = PBXBuildFile; fileRef = E101EBBA2EBB905500691C76 /* HealthDataView.swift */; };
 		E101EBBD2EBB907D00691C76 /* HealthKitSetupGuide.swift in Sources */ = {isa = PBXBuildFile; fileRef = E101EBBC2EBB907D00691C76 /* HealthKitSetupGuide.swift */; };
 		E13642972ECF53C1005E9A29 /* DashboardView.swift in Sources */ = {isa = PBXBuildFile; fileRef = E13642962ECF53C0005E9A29 /* DashboardView.swift */; };
+		E13642992ECF6907005E9A29 /* AuthManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = E13642982ECF6907005E9A29 /* AuthManager.swift */; };
+		E136429B2ECF6918005E9A29 /* LoginView.swift in Sources */ = {isa = PBXBuildFile; fileRef = E136429A2ECF6918005E9A29 /* LoginView.swift */; };
+		E136429D2ECF692C005E9A29 /* SettingsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = E136429C2ECF692C005E9A29 /* SettingsView.swift */; };
 		E18B71862EB1209100035304 /* aggregatorApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = E18B71852EB1209100035304 /* aggregatorApp.swift */; };
 		E18B71882EB1209100035304 /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = E18B71872EB1209100035304 /* ContentView.swift */; };
 		E18B718A2EB1209100035304 /* Item.swift in Sources */ = {isa = PBXBuildFile; fileRef = E18B71892EB1209100035304 /* Item.swift */; };
@@ -48,6 +51,9 @@
 		E101EBBE2EBB949B00691C76 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		E101EBC02EBB95B800691C76 /* aggregator.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = aggregator.entitlements; sourceTree = "<group>"; };
 		E13642962ECF53C0005E9A29 /* DashboardView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DashboardView.swift; sourceTree = "<group>"; };
+		E13642982ECF6907005E9A29 /* AuthManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AuthManager.swift; sourceTree = "<group>"; };
+		E136429A2ECF6918005E9A29 /* LoginView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginView.swift; sourceTree = "<group>"; };
+		E136429C2ECF692C005E9A29 /* SettingsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsView.swift; sourceTree = "<group>"; };
 		E18B71822EB1209100035304 /* aggregator.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = aggregator.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		E18B71852EB1209100035304 /* aggregatorApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = aggregatorApp.swift; sourceTree = "<group>"; };
 		E18B71872EB1209100035304 /* ContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentView.swift; sourceTree = "<group>"; };
@@ -123,6 +129,9 @@
 				E101EBBC2EBB907D00691C76 /* HealthKitSetupGuide.swift */,
 				E101EBBE2EBB949B00691C76 /* Info.plist */,
 				E13642962ECF53C0005E9A29 /* DashboardView.swift */,
+				E13642982ECF6907005E9A29 /* AuthManager.swift */,
+				E136429A2ECF6918005E9A29 /* LoginView.swift */,
+				E136429C2ECF692C005E9A29 /* SettingsView.swift */,
 			);
 			path = aggregator;
 			sourceTree = "<group>";
@@ -290,7 +299,10 @@
 				E101EBB92EBB903800691C76 /* HealthKitManager.swift in Sources */,
 				E101EBBB2EBB905500691C76 /* HealthDataView.swift in Sources */,
 				E18B71862EB1209100035304 /* aggregatorApp.swift in Sources */,
+				E136429B2ECF6918005E9A29 /* LoginView.swift in Sources */,
+				E136429D2ECF692C005E9A29 /* SettingsView.swift in Sources */,
 				E101EBBD2EBB907D00691C76 /* HealthKitSetupGuide.swift in Sources */,
+				E13642992ECF6907005E9A29 /* AuthManager.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

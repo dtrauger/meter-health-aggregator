@@ -13,17 +13,24 @@ class AuthManager {
     private let tokenKey = "authToken"
     private let defaults = UserDefaults.standard
     
+    var token: String? {
+        didSet {
+            // Save to UserDefaults whenever token changes
+            if let value = token {
+                defaults.set(value, forKey: tokenKey)
+            } else {
+                defaults.removeObject(forKey: tokenKey)
+            }
+        }
+    }
+    
     var isAuthenticated: Bool {
         return token != nil && !token!.isEmpty
     }
     
-    var token: String? {
-        get {
-            defaults.string(forKey: tokenKey)
-        }
-        set {
-            defaults.set(newValue, forKey: tokenKey)
-        }
+    init() {
+        // Load token from UserDefaults on init
+        self.token = defaults.string(forKey: tokenKey)
     }
     
     func login(username: String, password: String) -> Bool {

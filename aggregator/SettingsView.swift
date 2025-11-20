@@ -8,7 +8,7 @@
 import SwiftUI
 
 struct SettingsView: View {
-    @Environment(AuthManager.self) private var authManager
+    @Bindable var authManager: AuthManager
     @State private var showLogoutAlert = false
     
     var body: some View {
@@ -69,6 +69,5 @@ struct SettingsView: View {
 }
 
 #Preview {
-    SettingsView()
-        .environment(AuthManager())
+    SettingsView(authManager: AuthManager())
 }
