@@ -10,7 +10,17 @@ import SwiftData
 
 struct ContentView: View {
     var body: some View {
-        HealthDataView()
+        TabView {
+            DashboardView()
+                .tabItem {
+                    Label("Dashboard", systemImage: "square.grid.2x2.fill")
+                }
+            
+            HealthDataView()
+                .tabItem {
+                    Label("Health", systemImage: "heart.fill")
+                }
+        }
     }
 }
 
