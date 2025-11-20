@@ -19,6 +19,8 @@ final class HealthDataEntry {
     var systolicBP: Double?
     var diastolicBP: Double?
     var respiratoryRate: Double?
+    var steps: Double?
+    var exerciseMinutes: Double?
     
     // Source information (app/device name)
     var heartRateSource: String?
@@ -28,6 +30,8 @@ final class HealthDataEntry {
     var systolicBPSource: String?
     var diastolicBPSource: String?
     var respiratoryRateSource: String?
+    var stepsSource: String?
+    var exerciseMinutesSource: String?
     
     // Source bundle identifiers
     var heartRateSourceBundle: String?
@@ -37,6 +41,8 @@ final class HealthDataEntry {
     var systolicBPSourceBundle: String?
     var diastolicBPSourceBundle: String?
     var respiratoryRateSourceBundle: String?
+    var stepsSourceBundle: String?
+    var exerciseMinutesSourceBundle: String?
     
     // Source version (product version)
     var heartRateSourceVersion: String?
@@ -46,6 +52,8 @@ final class HealthDataEntry {
     var systolicBPSourceVersion: String?
     var diastolicBPSourceVersion: String?
     var respiratoryRateSourceVersion: String?
+    var stepsSourceVersion: String?
+    var exerciseMinutesSourceVersion: String?
     
     // Operating system version
     var heartRateSourceOS: String?
@@ -55,6 +63,8 @@ final class HealthDataEntry {
     var systolicBPSourceOS: String?
     var diastolicBPSourceOS: String?
     var respiratoryRateSourceOS: String?
+    var stepsSourceOS: String?
+    var exerciseMinutesSourceOS: String?
     
     // Sample identifiers (UUIDs from HealthKit)
     var heartRateId: String?
@@ -64,6 +74,8 @@ final class HealthDataEntry {
     var systolicBPId: String?
     var diastolicBPId: String?
     var respiratoryRateId: String?
+    var stepsId: String?
+    var exerciseMinutesId: String?
     
     // Metadata flags
     var heartRateWasUserEntered: Bool?
@@ -73,6 +85,8 @@ final class HealthDataEntry {
     var systolicBPWasUserEntered: Bool?
     var diastolicBPWasUserEntered: Bool?
     var respiratoryRateWasUserEntered: Bool?
+    var stepsWasUserEntered: Bool?
+    var exerciseMinutesWasUserEntered: Bool?
     
     // Complete metadata (stored as JSON string for flexibility)
     var heartRateMetadata: String?
@@ -82,6 +96,8 @@ final class HealthDataEntry {
     var systolicBPMetadata: String?
     var diastolicBPMetadata: String?
     var respiratoryRateMetadata: String?
+    var stepsMetadata: String?
+    var exerciseMinutesMetadata: String?
     
     // Complete HKSample as JSON (all properties)
     var heartRateCompleteSample: String?
@@ -91,6 +107,8 @@ final class HealthDataEntry {
     var systolicBPCompleteSample: String?
     var diastolicBPCompleteSample: String?
     var respiratoryRateCompleteSample: String?
+    var stepsCompleteSample: String?
+    var exerciseMinutesCompleteSample: String?
     
     init(date: Date) {
         self.date = date
@@ -124,6 +142,8 @@ enum HealthMetricType: String, CaseIterable {
     case bloodGlucose = "Blood Glucose"
     case bloodPressure = "Blood Pressure"
     case respiratoryRate = "Respiratory Rate"
+    case steps = "Steps"
+    case exerciseMinutes = "Exercise Minutes"
     
     var unit: String {
         switch self {
@@ -139,6 +159,19 @@ enum HealthMetricType: String, CaseIterable {
             return "mmHg"
         case .respiratoryRate:
             return "breaths/min"
+        case .steps:
+            return "steps"
+        case .exerciseMinutes:
+            return "min"
+        }
+    }
+    
+    var formatSpecifier: String {
+        switch self {
+        case .heartRate, .bloodOxygen, .steps, .exerciseMinutes:
+            return "%.0f"  // Whole numbers
+        case .weight, .bloodGlucose, .bloodPressure, .respiratoryRate:
+            return "%.1f"  // One decimal place
         }
     }
     
@@ -156,6 +189,10 @@ enum HealthMetricType: String, CaseIterable {
             return "heart.circle.fill"
         case .respiratoryRate:
             return "wind"
+        case .steps:
+            return "figure.walk"
+        case .exerciseMinutes:
+            return "figure.run"
         }
     }
 }

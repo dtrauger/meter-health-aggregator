@@ -16,11 +16,16 @@ struct HealthDataView: View {
     @State private var selectedMetric: HealthMetricType = .heartRate
     @State private var isLoading = false
     @State private var showingAuthorizationAlert = false
+    @State private var isCheckingAuthorization = true
     
     var body: some View {
         NavigationView {
             VStack(spacing: 0) {
-                if !healthKitManager.isAuthorized {
+                if isCheckingAuthorization {
+                    // Show loading while checking authorization
+                    ProgressView("Checking HealthKit access...")
+                        .frame(maxWidth: .infinity, maxHeight: .infinity)
+                } else if !healthKitManager.isAuthorized {
                     authorizationView
                 } else {
                     metricSelector
@@ -42,8 +47,22 @@ struct HealthDataView: View {
                     .disabled(isLoading || !healthKitManager.isAuthorized)
                 }
             }
-            .onAppear {
+            .task {
+                // Wait a moment for authorization check to complete
+                try? await Task.sleep(nanoseconds: 200_000_000) // 0.2 seconds
+                isCheckingAuthorization = false
+                
+                // Refresh data if authorized
                 if healthKitManager.isAuthorized {
+                    refreshData()
+                }
+            }
+            .onChange(of: healthKitManager.isAuthorized) { oldValue, newValue in
+                // Stop checking state when authorization changes
+                isCheckingAuthorization = false
+                
+                // Auto-refresh when authorization status changes to authorized
+                if newValue && !oldValue {
                     refreshData()
                 }
             }
@@ -310,7 +329,7 @@ struct HealthDataView: View {
                                     Spacer()
                                     
                                     VStack(alignment: .trailing) {
-                                        Text("\(dataPoint.value, specifier: "%.1f")")
+                                        Text("\(dataPoint.value, specifier: selectedMetric.formatSpecifier)")
                                             .font(.title2)
                                             .fontWeight(.semibold)
                                         Text(selectedMetric.unit)

@@ -12,7 +12,7 @@ import SwiftData
 @Observable
 class HealthKitManager {
     private let healthStore = HKHealthStore()
-    var isAuthorized = true  // Start optimistically as true to avoid flashing auth screen
+    var isAuthorized = false
     var authorizationError: Error?
     var authorizationMessage: String?
     
@@ -23,11 +23,14 @@ class HealthKitManager {
         HKQuantityType.quantityType(forIdentifier: .bloodGlucose)!,
         HKQuantityType.quantityType(forIdentifier: .bloodPressureSystolic)!,
         HKQuantityType.quantityType(forIdentifier: .bloodPressureDiastolic)!,
-        HKQuantityType.quantityType(forIdentifier: .respiratoryRate)!
+        HKQuantityType.quantityType(forIdentifier: .respiratoryRate)!,
+        HKQuantityType.quantityType(forIdentifier: .stepCount)!,
+        HKQuantityType.quantityType(forIdentifier: .appleExerciseTime)!
     ]
     
     init() {
         checkHealthDataAvailability()
+        checkAccessByQuery()
     }
     
     private func checkHealthDataAvailability() {
@@ -36,6 +39,37 @@ class HealthKitManager {
             print("HealthKit is not available on this device")
             return
         }
+    }
+    
+    private func checkAccessByQuery() {
+        guard HKHealthStore.isHealthDataAvailable(),
+              let heartRateType = HKQuantityType.quantityType(forIdentifier: .heartRate) else {
+            return
+        }
+        
+        // Perform a quick query to see if we have access
+        // HealthKit doesn't reliably report authorization status for privacy reasons,
+        // so we attempt a query to determine if we have access
+        let query = HKSampleQuery(
+            sampleType: heartRateType,
+            predicate: nil,
+            limit: 1,
+            sortDescriptors: nil
+        ) { [weak self] _, samples, error in
+            DispatchQueue.main.async {
+                if error == nil {
+                    // Successfully queried, we have access
+                    self?.isAuthorized = true
+                    self?.authorizationMessage = "HealthKit access granted"
+                } else {
+                    // Query failed, likely no access
+                    self?.isAuthorized = false
+                    self?.authorizationMessage = "Please grant HealthKit permissions to view your health data"
+                }
+            }
+        }
+        
+        healthStore.execute(query)
     }
     
     // Helper function to convert metadata dictionary to JSON string
@@ -93,6 +127,10 @@ class HealthKitManager {
             return HKUnit(from: "mmHg")
         case HKQuantityTypeIdentifier.respiratoryRate.rawValue:
             return HKUnit(from: "count/min")
+        case HKQuantityTypeIdentifier.stepCount.rawValue:
+            return HKUnit.count()
+        case HKQuantityTypeIdentifier.appleExerciseTime.rawValue:
+            return HKUnit.minute()
         default:
             // Fallback to a generic unit if type is unknown
             return HKUnit.count()
@@ -208,16 +246,15 @@ class HealthKitManager {
         
         healthStore.requestAuthorization(toShare: [], read: typesToRead) { [weak self] success, error in
             DispatchQueue.main.async {
-                self?.isAuthorized = success
                 self?.authorizationError = error
                 
                 if let error = error {
                     self?.authorizationMessage = "HealthKit authorization failed: \(error.localizedDescription)"
                     print("HealthKit authorization failed: \(error.localizedDescription)")
-                } else if success {
-                    self?.authorizationMessage = "HealthKit access granted"
+                    self?.isAuthorized = false
                 } else {
-                    self?.authorizationMessage = "Please grant HealthKit permissions in Settings to view your health data"
+                    // After authorization dialog, check actual access by doing a query
+                    self?.checkAccessByQuery()
                 }
             }
         }
@@ -397,6 +434,32 @@ class HealthKitManager {
             dispatchGroup.leave()
         }
         
+        // Steps - use statistics query for accurate daily totals
+        dispatchGroup.enter()
+        fetchDailySumData(for: .stepCount, startDate: startDate, endDate: endDate) { dailyTotals in
+            for (date, value) in dailyTotals {
+                let dayStart = Calendar.current.startOfDay(for: date)
+                if healthEntries[dayStart] == nil {
+                    healthEntries[dayStart] = HealthDataEntry(date: dayStart)
+                }
+                healthEntries[dayStart]?.steps = value
+            }
+            dispatchGroup.leave()
+        }
+        
+        // Exercise Minutes - use statistics query for accurate daily totals
+        dispatchGroup.enter()
+        fetchDailySumData(for: .appleExerciseTime, startDate: startDate, endDate: endDate) { dailyTotals in
+            for (date, value) in dailyTotals {
+                let dayStart = Calendar.current.startOfDay(for: date)
+                if healthEntries[dayStart] == nil {
+                    healthEntries[dayStart] = HealthDataEntry(date: dayStart)
+                }
+                healthEntries[dayStart]?.exerciseMinutes = value
+            }
+            dispatchGroup.leave()
+        }
+        
         dispatchGroup.notify(queue: .main) {
             let sortedEntries = healthEntries.values.sorted { $0.date < $1.date }
             completion(sortedEntries)
@@ -428,6 +491,52 @@ class HealthKitManager {
         healthStore.execute(query)
     }
     
+    private func fetchDailySumData(for identifier: HKQuantityTypeIdentifier, startDate: Date, endDate: Date, completion: @escaping ([Date: Double]) -> Void) {
+        guard let quantityType = HKQuantityType.quantityType(forIdentifier: identifier) else {
+            completion([:])
+            return
+        }
+        
+        // Create a daily interval for statistics collection
+        var interval = DateComponents()
+        interval.day = 1
+        
+        let calendar = Calendar.current
+        let anchorDate = calendar.startOfDay(for: startDate)
+        
+        // Determine the appropriate unit
+        let unit = getUnitForQuantityType(quantityType)
+        
+        let query = HKStatisticsCollectionQuery(
+            quantityType: quantityType,
+            quantitySamplePredicate: nil,
+            options: .cumulativeSum,
+            anchorDate: anchorDate,
+            intervalComponents: interval
+        )
+        
+        query.initialResultsHandler = { query, results, error in
+            if let error = error {
+                print("Error fetching statistics for \(identifier.rawValue): \(error.localizedDescription)")
+                completion([:])
+                return
+            }
+            
+            var dailyTotals: [Date: Double] = [:]
+            
+            results?.enumerateStatistics(from: startDate, to: endDate) { statistics, stop in
+                if let sum = statistics.sumQuantity() {
+                    let value = sum.doubleValue(for: unit)
+                    dailyTotals[statistics.startDate] = value
+                }
+            }
+            
+            completion(dailyTotals)
+        }
+        
+        healthStore.execute(query)
+    }
+    
     func getDataPoints(from entries: [HealthDataEntry], for type: HealthMetricType) -> [HealthDataPoint] {
         return entries.compactMap { entry in
             var value: Double?
@@ -446,6 +555,10 @@ class HealthKitManager {
                 value = entry.systolicBP
             case .respiratoryRate:
                 value = entry.respiratoryRate
+            case .steps:
+                value = entry.steps
+            case .exerciseMinutes:
+                value = entry.exerciseMinutes
             }
             
             guard let unwrappedValue = value else { return nil }

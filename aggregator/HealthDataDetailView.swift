@@ -96,6 +96,10 @@ struct HealthDataDetailView: View {
             }
         case .respiratoryRate:
             completeSampleJSON = entry.respiratoryRateCompleteSample
+        case .steps:
+            completeSampleJSON = entry.stepsCompleteSample
+        case .exerciseMinutes:
+            completeSampleJSON = entry.exerciseMinutesCompleteSample
         }
         
         // If we have complete sample JSON, use it
