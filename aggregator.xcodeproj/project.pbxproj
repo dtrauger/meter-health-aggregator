@@ -15,6 +15,9 @@
 		E13642992ECF6907005E9A29 /* AuthManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = E13642982ECF6907005E9A29 /* AuthManager.swift */; };
 		E136429B2ECF6918005E9A29 /* LoginView.swift in Sources */ = {isa = PBXBuildFile; fileRef = E136429A2ECF6918005E9A29 /* LoginView.swift */; };
 		E136429D2ECF692C005E9A29 /* SettingsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = E136429C2ECF692C005E9A29 /* SettingsView.swift */; };
+		E136429F2ED0B8FF005E9A29 /* User.swift in Sources */ = {isa = PBXBuildFile; fileRef = E136429E2ED0B8FF005E9A29 /* User.swift */; };
+		E13642A12ED0C2FD005E9A29 /* APIService.swift in Sources */ = {isa = PBXBuildFile; fileRef = E13642A02ED0C2FD005E9A29 /* APIService.swift */; };
+		E13642A32ED0E104005E9A29 /* Group.swift in Sources */ = {isa = PBXBuildFile; fileRef = E13642A22ED0E104005E9A29 /* Group.swift */; };
 		E18B71862EB1209100035304 /* aggregatorApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = E18B71852EB1209100035304 /* aggregatorApp.swift */; };
 		E18B71882EB1209100035304 /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = E18B71872EB1209100035304 /* ContentView.swift */; };
 		E18B718A2EB1209100035304 /* Item.swift in Sources */ = {isa = PBXBuildFile; fileRef = E18B71892EB1209100035304 /* Item.swift */; };
@@ -54,6 +57,9 @@
 		E13642982ECF6907005E9A29 /* AuthManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AuthManager.swift; sourceTree = "<group>"; };
 		E136429A2ECF6918005E9A29 /* LoginView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginView.swift; sourceTree = "<group>"; };
 		E136429C2ECF692C005E9A29 /* SettingsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsView.swift; sourceTree = "<group>"; };
+		E136429E2ED0B8FF005E9A29 /* User.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = User.swift; sourceTree = "<group>"; };
+		E13642A02ED0C2FD005E9A29 /* APIService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = APIService.swift; sourceTree = "<group>"; };
+		E13642A22ED0E104005E9A29 /* Group.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Group.swift; sourceTree = "<group>"; };
 		E18B71822EB1209100035304 /* aggregator.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = aggregator.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		E18B71852EB1209100035304 /* aggregatorApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = aggregatorApp.swift; sourceTree = "<group>"; };
 		E18B71872EB1209100035304 /* ContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentView.swift; sourceTree = "<group>"; };
@@ -132,6 +138,9 @@
 				E13642982ECF6907005E9A29 /* AuthManager.swift */,
 				E136429A2ECF6918005E9A29 /* LoginView.swift */,
 				E136429C2ECF692C005E9A29 /* SettingsView.swift */,
+				E136429E2ED0B8FF005E9A29 /* User.swift */,
+				E13642A02ED0C2FD005E9A29 /* APIService.swift */,
+				E13642A22ED0E104005E9A29 /* Group.swift */,
 			);
 			path = aggregator;
 			sourceTree = "<group>";
@@ -291,13 +300,16 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				E136429F2ED0B8FF005E9A29 /* User.swift in Sources */,
 				E18B71882EB1209100035304 /* ContentView.swift in Sources */,
 				E101EBB72EBB901C00691C76 /* HealthDataModel.swift in Sources */,
+				E13642A32ED0E104005E9A29 /* Group.swift in Sources */,
 				E18B718A2EB1209100035304 /* Item.swift in Sources */,
 				E18F84822ECBC989000AAB33 /* HealthDataDetailView.swift in Sources */,
 				E13642972ECF53C1005E9A29 /* DashboardView.swift in Sources */,
 				E101EBB92EBB903800691C76 /* HealthKitManager.swift in Sources */,
 				E101EBBB2EBB905500691C76 /* HealthDataView.swift in Sources */,
+				E13642A12ED0C2FD005E9A29 /* APIService.swift in Sources */,
 				E18B71862EB1209100035304 /* aggregatorApp.swift in Sources */,
 				E136429B2ECF6918005E9A29 /* LoginView.swift in Sources */,
 				E136429D2ECF692C005E9A29 /* SettingsView.swift in Sources */,

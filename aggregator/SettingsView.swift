@@ -6,29 +6,80 @@
 //
 
 import SwiftUI
+import SwiftData
 
 struct SettingsView: View {
     @Bindable var authManager: AuthManager
+    let modelContext: ModelContext
     @State private var showLogoutAlert = false
     
     var body: some View {
         NavigationView {
             List {
-                Section {
-                    if let token = authManager.token {
-                        VStack(alignment: .leading, spacing: 4) {
-                            Text("Auth Token")
-                                .font(.caption)
+                if let user = authManager.currentUser {
+                    Section {
+                        HStack {
+                            Text("Name")
+                            Spacer()
+                            Text(user.fullName)
                                 .foregroundColor(.secondary)
-                            Text(token)
-                                .font(.caption)
-                                .fontDesign(.monospaced)
-                                .foregroundColor(.primary)
                         }
-                        .padding(.vertical, 4)
+                        
+                        HStack {
+                            Text("Type")
+                            Spacer()
+                            Text(user.type.capitalized)
+                                .foregroundColor(.secondary)
+                        }
+                        
+                        HStack {
+                            Text("Date of Birth")
+                            Spacer()
+                            Text(user.dateOfBirth.formatted(date: .abbreviated, time: .omitted))
+                                .foregroundColor(.secondary)
+                        }
+                        
+                        HStack {
+                            Text("MRN")
+                            Spacer()
+                            Text(user.mrn)
+                                .foregroundColor(.secondary)
+                        }
+                    } header: {
+                        Text("User Information")
                     }
-                } header: {
-                    Text("Authentication")
+                    
+                    // Groups Section
+                    if !user.groups.isEmpty {
+                        Section {
+                            ForEach(user.groups, id: \.id) { group in
+                                HStack {
+                                    Image(systemName: "person.2.fill")
+                                        .foregroundColor(.blue)
+                                    Text(group.name)
+                                }
+                            }
+                        } header: {
+                            Text("Groups")
+                        }
+                    }
+                    
+                    Section {
+                        if let token = user.authToken {
+                            VStack(alignment: .leading, spacing: 4) {
+                                Text("Auth Token")
+                                    .font(.caption)
+                                    .foregroundColor(.secondary)
+                                Text(token)
+                                    .font(.caption)
+                                    .fontDesign(.monospaced)
+                                    .foregroundColor(.primary)
+                            }
+                            .padding(.vertical, 4)
+                        }
+                    } header: {
+                        Text("Authentication")
+                    }
                 }
                 
                 Section {
@@ -59,15 +110,25 @@ struct SettingsView: View {
             .alert("Logout", isPresented: $showLogoutAlert) {
                 Button("Cancel", role: .cancel) { }
                 Button("Logout", role: .destructive) {
-                    authManager.logout()
+                    logout()
                 }
             } message: {
                 Text("Are you sure you want to logout?")
             }
         }
     }
+    
+    private func logout() {
+        if let user = authManager.currentUser {
+            // Clear the auth token
+            user.authToken = nil
+            try? modelContext.save()
+        }
+        
+        authManager.logout()
+    }
 }
 
 #Preview {
-    SettingsView(authManager: AuthManager())
+    SettingsView(authManager: AuthManager(), modelContext: ModelContext(try! ModelContainer(for: User.self)))
 }

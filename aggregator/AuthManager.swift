@@ -7,46 +7,66 @@
 
 import Foundation
 import SwiftUI
+import SwiftData
 
 @Observable
 class AuthManager {
-    private let tokenKey = "authToken"
-    private let defaults = UserDefaults.standard
-    
-    var token: String? {
-        didSet {
-            // Save to UserDefaults whenever token changes
-            if let value = token {
-                defaults.set(value, forKey: tokenKey)
-            } else {
-                defaults.removeObject(forKey: tokenKey)
-            }
-        }
-    }
+    var currentUser: User?
+    var currentGroups: [UserGroup] = []
+    var lastError: String?
     
     var isAuthenticated: Bool {
-        return token != nil && !token!.isEmpty
+        return currentUser?.authToken != nil && !currentUser!.authToken!.isEmpty
     }
     
-    init() {
-        // Load token from UserDefaults on init
-        self.token = defaults.string(forKey: tokenKey)
+    var token: String? {
+        return currentUser?.authToken
     }
     
-    func login(username: String, password: String) -> Bool {
-        // For now, accept any non-empty username and password
-        guard !username.isEmpty && !password.isEmpty else {
-            return false
+    func login(username: String, password: String) async throws -> Bool {
+        // Clear any previous error
+        lastError = nil
+        
+        do {
+            // Call API service
+            let response = try await APIService.shared.login(username: username, password: password)
+            
+            // Parse date of birth
+            let dateFormatter = DateFormatter()
+            dateFormatter.dateFormat = "yyyy-MM-dd"
+            let dob = dateFormatter.date(from: response.user.dob) ?? Date()
+            
+            // Create User object from API response
+            currentUser = User(
+                firstName: response.user.firstName,
+                lastName: response.user.lastName,
+                dateOfBirth: dob,
+                mrn: String(response.user.mrn),
+                type: response.user.type,
+                authToken: response.user.authToken
+            )
+            
+            // Create UserGroup objects from API response
+            currentGroups = response.groups.map { groupResponse in
+                UserGroup(id: groupResponse.id, name: groupResponse.name)
+            }
+            
+            // Link groups to user
+            currentUser?.groups = currentGroups
+            
+            return true
+        } catch let error as APIError {
+            lastError = error.localizedDescription
+            throw error
+        } catch {
+            lastError = error.localizedDescription
+            throw error
         }
-        
-        // Generate a random UUID token (will be replaced with API response later)
-        let randomToken = UUID().uuidString
-        token = randomToken
-        
-        return true
     }
     
     func logout() {
-        token = nil
+        currentUser = nil
+        currentGroups = []
+        lastError = nil
     }
 }

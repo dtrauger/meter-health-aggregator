@@ -6,13 +6,16 @@
 //
 
 import SwiftUI
+import SwiftData
 
 struct LoginView: View {
     @Bindable var authManager: AuthManager
+    let modelContext: ModelContext
     
     @State private var username: String = ""
     @State private var password: String = ""
     @State private var showError: Bool = false
+    @State private var errorMessage: String = "Please enter both username and password"
     @State private var isLoading: Bool = false
     
     var body: some View {
@@ -73,7 +76,7 @@ struct LoginView: View {
                     
                     // Error Message
                     if showError {
-                        Text("Please enter both username and password")
+                        Text(errorMessage)
                             .font(.caption)
                             .foregroundColor(.red)
                             .frame(maxWidth: .infinity, alignment: .leading)
@@ -116,19 +119,39 @@ struct LoginView: View {
         showError = false
         isLoading = true
         
-        // Simulate network delay
-        DispatchQueue.main.asyncAfter(deadline: .now() + 0.5) {
-            let success = authManager.login(username: username, password: password)
-            
-            isLoading = false
-            
-            if !success {
-                showError = true
+        Task {
+            do {
+                // Call async login method
+                let success = try await authManager.login(username: username, password: password)
+                
+                await MainActor.run {
+                    isLoading = false
+                    
+                    if success, let user = authManager.currentUser {
+                        // Save groups to SwiftData first
+                        for group in authManager.currentGroups {
+                            modelContext.insert(group)
+                        }
+                        
+                        // Save user to SwiftData
+                        modelContext.insert(user)
+                        try? modelContext.save()
+                    } else {
+                        errorMessage = authManager.lastError ?? "Login failed"
+                        showError = true
+                    }
+                }
+            } catch {
+                await MainActor.run {
+                    isLoading = false
+                    errorMessage = authManager.lastError ?? error.localizedDescription
+                    showError = true
+                }
             }
         }
     }
 }
 
 #Preview {
-    LoginView(authManager: AuthManager())
+    LoginView(authManager: AuthManager(), modelContext: ModelContext(try! ModelContainer(for: User.self)))
 }
